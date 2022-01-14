@@ -3,6 +3,7 @@ import watchdog.events
 import watchdog.observers
 import time
 import shutil
+import os
 
 
 class Handler(watchdog.events.PatternMatchingEventHandler):
@@ -22,7 +23,9 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         source = event.src_path
 
         # Destination path
-        destination = self.to_copy + src_path.split(r"\\")[-1]
+        path_to_copy = os.path.normpath(source)
+        destination = self.to_copy + path_to_copy.split(os.sep)[-1]
+
         print(destination)
 
         # Copy the content of
