@@ -28,14 +28,17 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
             destination = self.to_copy + \
                 path_to_copy.split(os.sep)[-2] + \
                 "\\" + path_to_copy.split(os.sep)[-1]
+            self.copytodist(source, destination)
+        elif "node_modules" in source:
+            print("will not copy")
         else:
             destination = self.to_copy + path_to_copy.split(os.sep)[-1]
-
-        print(destination)
+            self.copytodist(source, destination)
 
         # Copy the content of
         # source to destination
 
+    def copytodist(self, source, destination):
         try:
             shutil.copy(source, destination)
             print("File copied successfully.")
