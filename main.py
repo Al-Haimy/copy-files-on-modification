@@ -9,7 +9,7 @@ import os
 class Handler(watchdog.events.PatternMatchingEventHandler):
     def __init__(self, to_copy):
         # Set the patterns for PatternMatchingEventHandler
-        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*'],
+        watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*.php', "*.js", "*.map"],
                                                              ignore_directories=True, case_sensitive=False)
         self.to_copy = to_copy
 
@@ -24,7 +24,12 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 
         # Destination path
         path_to_copy = os.path.normpath(source)
-        destination = self.to_copy + path_to_copy.split(os.sep)[-1]
+        if "build" in source:
+            destination = self.to_copy + \
+                path_to_copy.split(os.sep)[-2] + \
+                "\\" + path_to_copy.split(os.sep)[-1]
+        else:
+            destination = self.to_copy + path_to_copy.split(os.sep)[-1]
 
         print(destination)
 
